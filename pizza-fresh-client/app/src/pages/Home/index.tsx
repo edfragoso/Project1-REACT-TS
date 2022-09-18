@@ -1,39 +1,45 @@
 import Menu from "components/Menu";
-import  {DateTime} from "luxon"
-import { ReactComponent as Search} from "assets/icons/search.svg"
+import { DateTime } from "luxon";
+import { ReactComponent as Search } from "assets/icons/search.svg";
 import * as S from "./style";
 import { RoutePath } from "types/routes";
 import { navigationItems } from "data/navigation";
-
+import ProductItemList from "components/ProductItemList";
+import ProductItem from "components/ProductItem";
 
 const Home = () => {
-  const  dateDescription = DateTime.now().toLocaleString({...DateTime.DATE_SHORT, weekday: 'long'});
+  const dateDescription = DateTime.now().toLocaleString({
+    ...DateTime.DATE_SHORT,
+    weekday: "long",
+  });
   return (
     <S.Home>
-        <Menu 
-          active={RoutePath.HOME}
-          navItems={navigationItems}
-        />
+      <Menu active={RoutePath.HOME} navItems={navigationItems} />
       <S.HomeContent>
         <header>
-            <S.HomeHeaderDetails>
-                <div>
-                    <S.HomeHeaderDetailsLogo>Pizza Fresh</S.HomeHeaderDetailsLogo>
-                    <S.HomeHeaderDetailsDate>{dateDescription}</S.HomeHeaderDetailsDate>
-                </div>
-                <S.HomeHeaderDetailsSearch>
-                    <Search />
-                    <input type="text" placeholder="Procure pelo sabor da Pizza" />
-                </S.HomeHeaderDetailsSearch>
-            </S.HomeHeaderDetails>
+          <S.HomeHeaderDetails>
+            <div>
+              <S.HomeHeaderDetailsLogo>Pizza Fresh</S.HomeHeaderDetailsLogo>
+              <S.HomeHeaderDetailsDate>
+                {dateDescription}
+              </S.HomeHeaderDetailsDate>
+            </div>
+            <S.HomeHeaderDetailsSearch>
+              <Search />
+              <input type="text" placeholder="Procure pelo sabor da Pizza" />
+            </S.HomeHeaderDetailsSearch>
+          </S.HomeHeaderDetails>
         </header>
         <div>
-            <S.HomeProductTitle>
-                <b>Pizzas</b>
-            </S.HomeProductTitle>
-            <S.HomeProductList>
-                <p>Lista de Produtos aqui</p>
-            </S.HomeProductList>
+          <S.HomeProductTitle>
+            <b>Pizzas</b>
+          </S.HomeProductTitle>
+
+          <S.HomeProductList>
+            <ProductItemList>
+              <ProductItem />
+            </ProductItemList>
+          </S.HomeProductList>
         </div>
       </S.HomeContent>
       <aside>
