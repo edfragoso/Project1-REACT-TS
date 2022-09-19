@@ -35,11 +35,10 @@ const Home = () => {
           <S.HomeProductTitle>
             <b>Pizzas</b>
           </S.HomeProductTitle>
-
           <S.HomeProductList>
             <ProductItemList>
-              <ProductItem />
-            </ProductItemList>
+              {/* <ProductItem /> */}
+           </ProductItemList> 
           </S.HomeProductList>
         </div>
       </S.HomeContent>
