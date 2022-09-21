@@ -6,7 +6,7 @@ const ProductItem = () => {
             <S.ProductItemImage src="" alt="" />
             <div>
                 <S.ProductItemName>Nome do Produto</S.ProductItemName>
-                <S.ProductItemPrice>R$ 10.00</S.ProductItemPrice>
+                <S.ProductItemPrice>R$ 0.00</S.ProductItemPrice>
                 <S.ProductItemDescription>Descrição...</S.ProductItemDescription>
             </div>
         </S.ProductItem>

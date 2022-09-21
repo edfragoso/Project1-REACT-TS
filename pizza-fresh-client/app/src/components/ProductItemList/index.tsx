@@ -8,7 +8,7 @@ const ProductItemList = ({children}: ProductItemListProps) => {
     return(
         <section>
             <S.ProductItemListHeader>
-                <S.ProductItemListHeader>Escolha os sabores</S.ProductItemListHeader>
+                <S.ProductItemListHeaderTitle>Escolha os sabores</S.ProductItemListHeaderTitle>
                 <S.ProductItemListHeaderSelect>
                     <option value="default">Selecione a mesa</option>
                     <option value="">Mesa</option>
