@@ -1,8 +1,6 @@
 import styled, { css, keyframes } from "styled-components";
 import { ReactComponent as Back } from "assets/icons/back.svg";
 
-/* Criamos as animações `slideShow`e `slideHide` para definir posteriormente o mecanismo de exibição da barra lateral. */
-
 const slideShow = keyframes`
 	from {
 		right: -100vw;
@@ -20,8 +18,6 @@ const slideHide = keyframes`
 		right: -100vw;
 	}
 `;
-
-/* Abaixo seguem os modificadores de estado da animação */
 
 const CheckoutSectionModifiers = {
   closing: () => css`
