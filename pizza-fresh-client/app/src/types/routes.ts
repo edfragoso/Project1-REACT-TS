@@ -4,5 +4,5 @@ export enum RoutePath {
     SETTINGS = '/settings',
     SETTINGS_PRODUCTS = 'products',
     SETTINGS_TABLES = 'tables',
-    SETTINGS_USEERS = 'users'
+    SETTINGS_USERS = 'users'
 }
