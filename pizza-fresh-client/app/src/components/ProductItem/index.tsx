@@ -1,13 +1,18 @@
 import * as S from "./style";
+import { ProductResponse } from "types/Product";
 
-const ProductItem = () => {
+type ProductItemProps = {
+    product: ProductResponse
+    onSelect: (data: ProductResponse) => void
+}
+const ProductItem = ({product, onSelect}: ProductItemProps) => {
     return(
-        <S.ProductItem>
-            <S.ProductItemImage src="" alt="" />
+        <S.ProductItem role='listitem' onClick={()=>onSelect(product)}>
+            <S.ProductItemImage src={product.image} alt={`Pizza de ${product.name}`} />
             <div>
-                <S.ProductItemName>Nome do Produto</S.ProductItemName>
-                <S.ProductItemPrice>R$ 0.00</S.ProductItemPrice>
-                <S.ProductItemDescription>Descrição...</S.ProductItemDescription>
+                <S.ProductItemName>{product.name}</S.ProductItemName>
+                <S.ProductItemPrice>{product.price}</S.ProductItemPrice>
+                <S.ProductItemDescription>{product.description}</S.ProductItemDescription>
             </div>
         </S.ProductItem>
     );

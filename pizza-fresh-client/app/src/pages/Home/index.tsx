@@ -10,23 +10,28 @@ import OrderDetails from "components/OrderDetails";
 import Overlay from "components/Overlay";
 import CheckoutSection from "components/CheckoutSection";
 import { useNavigate } from "react-router-dom";
+import { products } from "mocks/products";
+import { orders } from "mocks/orders";
+import { ProductResponse } from "types/Product";
 
 const Home = () => {
   const dateDescription = DateTime.now().toLocaleString({
     ...DateTime.DATE_SHORT,
     weekday: "long",
   });
+  
   const navigate = useNavigate();
   const handleNavigation = (path: RoutePath) => navigate(path);
+  const handleSelection = (product: ProductResponse) => {}
 
   return (
     <S.Home>
       <Menu
-       active={RoutePath.HOME}
-       navItems={navigationItems}
-       onNavigate={handleNavigation}
-       onLogout={() => navigate(RoutePath.LOGIN)}
-       />
+        active={RoutePath.HOME}
+        navItems={navigationItems}
+        onNavigate={handleNavigation}
+        onLogout={() => navigate(RoutePath.LOGIN)}
+      />
       <S.HomeContent>
         <header>
           <S.HomeHeaderDetails>
@@ -48,8 +53,15 @@ const Home = () => {
           </S.HomeProductTitle>
           <S.HomeProductList>
             <ProductItemList>
-              <ProductItem />
-           </ProductItemList> 
+              {Boolean(products.length) &&
+                products.map((product, index) => (
+                  <ProductItem
+                   product={product}
+                   key={`ProductItem-${index}`}
+                   onSelect={handleSelection}
+                  />
+                ))}
+            </ProductItemList>
           </S.HomeProductList>
         </div>
       </S.HomeContent>
