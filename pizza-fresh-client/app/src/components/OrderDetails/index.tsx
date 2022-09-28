@@ -6,11 +6,13 @@ import * as S from "./style";
 import { HTMLAttributes, useEffect, useState } from "react";
 import { OrderItemType } from "types/OrderItemType";
 import { OrderType } from "types/orderType";
+import { isTemplateExpression } from "typescript";
 
 type OrderDetailsType = HTMLAttributes<HTMLDivElement>;
 
 type OrderDetailsProps = {
   orders: OrderItemType[];
+  onOrderChange: (orders: OrderItemType[])  => void
   onChangeActiveOrderType: (data: OrderType) => void;
   onRemoveItem: (id: string) => void;
   activeOrderType: OrderType;
@@ -18,6 +20,7 @@ type OrderDetailsProps = {
 
 const OrderDetails = ({
   orders,
+  onOrderChange,
   onChangeActiveOrderType,
   onRemoveItem,
   activeOrderType,
@@ -27,6 +30,12 @@ const OrderDetails = ({
     .reduce((a, b) => a + b, 0);
 
 const [priceState, setPriceState] = useState(price);
+const handleChange = (data: OrderItemType) => {
+  const list = orders.map((item) =>
+  item.product.id === data.product.id ? data : item
+);
+  onOrderChange(list);
+}
 
   useEffect(() => {
     setPriceState(price);
@@ -65,6 +74,7 @@ const [priceState, setPriceState] = useState(price);
             Boolean(orders.length) ? (
               orders.map((item, index) => (
                 <OrderItem
+                  onItemChange = {handleChange}
                   onRemoveItem = {() => onRemoveItem(item.product.id)}
                   product = {item.product}
                   quantity = {item.quantity}

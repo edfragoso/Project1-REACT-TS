@@ -1,5 +1,6 @@
 import { ReactComponent as Trash } from "assets/icons/trash.svg";
 import { ButtonHTMLAttributes, useEffect, useState } from "react";
+import { OrderItemType } from "types/OrderItemType";
 import { ProductResponse } from "types/Product";
 import * as S from "./style";
 
@@ -10,15 +11,18 @@ export type OrderItemProps = {
   quantity: number;
   observation?: string;
   onRemoveItem?: () => void;
+  onItemChange: (item: OrderItemType) => void;
 } & DivType;
 
 // Props que são funções, devolvem do filho parao pai
 // Props que não são funções devolvem do pai parao filho
+
 const OrderItem = ({
   product,
   quantity,
   observation = "",
   onRemoveItem,
+  onItemChange,
   ...props
 }: OrderItemProps) => {
   const [quantityState, setQuantityState] = useState(quantity);
@@ -30,6 +34,14 @@ const OrderItem = ({
 
   const handleQuantity = (data: number) => {
     setQuantityState(data);
+  };
+
+  const handleChange = (quantityParam: number, observationParam: string) => {
+    onItemChange({
+      product: product,
+      quantity: quantityParam,
+      observation: observationParam,
+    });
   };
 
   useEffect(() => {
@@ -62,15 +74,19 @@ const OrderItem = ({
           <S.OrderItemQuantity
             type="number"
             value={quantityState}
-            onChange={({ target }) => setQuantityState(Number(target.value))}
-          />
+            onChange={({ target }) => {
+             setQuantityState(Number(target.value))
+             handleChange(Number(target.value), observationState)
+            }}/>
         </S.OrderItemLeftTop>
         <S.OrderItemLeftObservation
           type="text"
           placeholder="Observações do Pedido"
           value={observationState}
-          onChange={({ target }) => setObservationState(target.value)}
-        />
+          onChange={({ target }) => {
+            setObservationState(target.value)
+            handleChange(quantityState, target.value)
+          }}/>
       </S.OrderItemLeft>
       <S.OrderItemRight>
         <S.OrderItemRightTotalPrice>
