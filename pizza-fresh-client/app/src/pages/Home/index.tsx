@@ -37,6 +37,10 @@ const Home = () => {
     : [...orders, item];
     setOrders(list);
   }
+  const handleRemoveOrderItem = (id: string) => {
+    const filtered = orders.filter((i) => i.product.id != id);
+    setOrders(filtered); 
+  }
 
   return (
     <S.Home>
@@ -84,6 +88,7 @@ const Home = () => {
          orders={orders}
          onChangeActiveOrderType = {(data) => setActiveOrderType(data)}
          activeOrderType = {activeOrderType}
+         onRemoveItem = {handleRemoveOrderItem}
         />
       </aside>
       {/* <Overlay>
