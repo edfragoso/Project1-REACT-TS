@@ -3,12 +3,24 @@ import OrderConfirmation from "components/OrderConfirmation";
 import { ReactComponent as Card } from "assets/icons/credit-card.svg";
 import { ReactComponent as Cash } from "assets/icons/wallet.svg";
 import * as S from "./style";
+import { HTMLAttributes, useState } from "react";
 
-const CheckoutSection = () => {
+type CheckoutSectionType = HTMLAttributes<HTMLDivElement>;
+type CheckoutSectionProps = {
+  onCloseSection: () => void;
+} & CheckoutSectionType
+
+const CheckoutSection = ({onCloseSection}: CheckoutSectionProps) => {
+
+  const [closing, setClosing] = useState<boolean>(false)
+  const handleClosingSection = () => {
+    setClosing(true);
+    setTimeout(onCloseSection, 800)
+  }
   return (
-    <S.CheckoutSection closing={false}>
+    <S.CheckoutSection closing={closing}>
       <S.CheckoutSectionConfirmation>
-        <S.BackIcon />
+        <S.BackIcon onClick={handleClosingSection} />
         <OrderConfirmation />
       </S.CheckoutSectionConfirmation>
       <S.CheckoutSectionPayment>
