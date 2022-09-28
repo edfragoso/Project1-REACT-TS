@@ -33,7 +33,7 @@ const Home = () => {
     const quantity = existing ? existing.quantity + 1 : 1;
     const item: OrderItemType = {product, quantity};
     const list = existing
-    ? orders.map((i) => (item.product.id === existing.product.id ? item: i))
+    ? orders.map((i) => (i.product.id === existing.product.id ? item: i))
     : [...orders, item];
     setOrders(list);
   }
