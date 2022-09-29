@@ -4,13 +4,17 @@ import { ReactComponent as Card } from "assets/icons/credit-card.svg";
 import { ReactComponent as Cash } from "assets/icons/wallet.svg";
 import * as S from "./style";
 import { HTMLAttributes, useState } from "react";
+import { OrderItemType } from "types/OrderItemType";
 
 type CheckoutSectionType = HTMLAttributes<HTMLDivElement>;
+
 type CheckoutSectionProps = {
+  orders: OrderItemType[];
+  onOrderChange: (orders: OrderItemType[])  => void;
   onCloseSection: () => void;
 } & CheckoutSectionType
 
-const CheckoutSection = ({onCloseSection}: CheckoutSectionProps) => {
+const CheckoutSection = ({orders, onOrderChange, onCloseSection}: CheckoutSectionProps) => {
 
   const [closing, setClosing] = useState<boolean>(false)
   const handleClosingSection = () => {
@@ -20,8 +24,8 @@ const CheckoutSection = ({onCloseSection}: CheckoutSectionProps) => {
   return (
     <S.CheckoutSection closing={closing}>
       <S.CheckoutSectionConfirmation>
-        <S.BackIcon onClick={handleClosingSection} />
-        <OrderConfirmation />
+        <S.BackIcon onClick = {handleClosingSection} />
+        <OrderConfirmation orders = {orders} onOrderChange={onOrderChange} />
       </S.CheckoutSectionConfirmation>
       <S.CheckoutSectionPayment>
         <S.CheckoutSectionPaymentHead>Pagamento</S.CheckoutSectionPaymentHead>
