@@ -6,6 +6,7 @@ import * as S from "./style";
 import { HTMLAttributes, useState } from "react";
 import { OrderItemType } from "types/OrderItemType";
 import { OrderType } from "types/orderType";
+import { PaymentMethod } from "types/PaymentMethod";
 
 type CheckoutSectionType = HTMLAttributes<HTMLDivElement>;
 
@@ -26,11 +27,13 @@ const CheckoutSection = ({
   selectedTable,
   onCloseSection,
 }: CheckoutSectionProps) => {
+  const [activeMethod, setActiveMethod] = useState<PaymentMethod>();
   const [closing, setClosing] = useState<boolean>(false);
   const handleClosingSection = () => {
     setClosing(true);
     setTimeout(onCloseSection, 800);
   };
+
   return (
     <S.CheckoutSection closing={closing}>
       <S.CheckoutSectionConfirmation>
@@ -48,9 +51,20 @@ const CheckoutSection = ({
           </S.CheckoutSectionPaymentFormTitle>
           <S.PaymentForm>
             <S.PaymentFormCheckbox>
-              <CheckboxIcon active={true} value="Cartão" icon={<Card />} />
-              <CheckboxIcon active={false} value="Dinheiro" icon={<Cash />} />
+              <CheckboxIcon
+               onClick={() => setActiveMethod(PaymentMethod.CARD)}
+               active={activeMethod === PaymentMethod.CARD}
+               value="Cartão"
+               icon={<Card />}
+              />
+              <CheckboxIcon
+               onClick={() => setActiveMethod(PaymentMethod.CASH)}
+               active={activeMethod === PaymentMethod.CASH}
+               value="Dinheiro"
+               icon={<Cash />}
+              />
             </S.PaymentFormCheckbox>
+            {activeMethod === PaymentMethod.CARD && (
             <>
               <S.PaymentFormGroup>
                 <label htmlFor="titular">Titular do cartão</label>
@@ -88,6 +102,7 @@ const CheckoutSection = ({
                 </S.PaymentFormHalfItem>
               </S.PaymentFormHalf>
             </>
+          )}
           </S.PaymentForm>
         </S.CheckoutSectionPaymentForm>
         <S.PaymentActions>
