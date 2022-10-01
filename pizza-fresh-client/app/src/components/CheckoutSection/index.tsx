@@ -10,11 +10,12 @@ type CheckoutSectionType = HTMLAttributes<HTMLDivElement>;
 
 type CheckoutSectionProps = {
   orders: OrderItemType[];
+  selectedTable?:number;
   onOrderChange: (orders: OrderItemType[])  => void;
   onCloseSection: () => void;
 } & CheckoutSectionType
 
-const CheckoutSection = ({orders, onOrderChange, onCloseSection}: CheckoutSectionProps) => {
+const CheckoutSection = ({orders, onOrderChange, selectedTable, onCloseSection}: CheckoutSectionProps) => {
 
   const [closing, setClosing] = useState<boolean>(false)
   const handleClosingSection = () => {
@@ -25,7 +26,7 @@ const CheckoutSection = ({orders, onOrderChange, onCloseSection}: CheckoutSectio
     <S.CheckoutSection closing={closing}>
       <S.CheckoutSectionConfirmation>
         <S.BackIcon onClick = {handleClosingSection} />
-        <OrderConfirmation orders = {orders} onOrderChange={onOrderChange} />
+        <OrderConfirmation orders ={orders} onOrderChange={onOrderChange} />
       </S.CheckoutSectionConfirmation>
       <S.CheckoutSectionPayment>
         <S.CheckoutSectionPaymentHead>Pagamento</S.CheckoutSectionPaymentHead>
@@ -96,7 +97,7 @@ const CheckoutSection = ({orders, onOrderChange, onCloseSection}: CheckoutSectio
                 id="table"
                 placeholder="01"
                 disabled
-                value={""}
+                value={selectedTable}
               />
             </S.PaymentActionsDetailsTableNumber>
           </S.PaymentActionsDetails>
