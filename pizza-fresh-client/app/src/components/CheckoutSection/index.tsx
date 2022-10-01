@@ -5,28 +5,37 @@ import { ReactComponent as Cash } from "assets/icons/wallet.svg";
 import * as S from "./style";
 import { HTMLAttributes, useState } from "react";
 import { OrderItemType } from "types/OrderItemType";
+import { OrderType } from "types/orderType";
 
 type CheckoutSectionType = HTMLAttributes<HTMLDivElement>;
 
 type CheckoutSectionProps = {
   orders: OrderItemType[];
-  selectedTable?:number;
-  onOrderChange: (orders: OrderItemType[])  => void;
+  selectedTable?: number;
+  onOrderChange: (orders: OrderItemType[]) => void;
+  onChangeActiveOrderType: (data: OrderType) => void;
+  activeOrderType: OrderType;
   onCloseSection: () => void;
-} & CheckoutSectionType
+} & CheckoutSectionType;
 
-const CheckoutSection = ({orders, onOrderChange, selectedTable, onCloseSection}: CheckoutSectionProps) => {
-
-  const [closing, setClosing] = useState<boolean>(false)
+const CheckoutSection = ({
+  orders,
+  onOrderChange,
+  onChangeActiveOrderType,
+  activeOrderType,
+  selectedTable,
+  onCloseSection,
+}: CheckoutSectionProps) => {
+  const [closing, setClosing] = useState<boolean>(false);
   const handleClosingSection = () => {
     setClosing(true);
-    setTimeout(onCloseSection, 800)
-  }
+    setTimeout(onCloseSection, 800);
+  };
   return (
     <S.CheckoutSection closing={closing}>
       <S.CheckoutSectionConfirmation>
-        <S.BackIcon onClick = {handleClosingSection} />
-        <OrderConfirmation orders ={orders} onOrderChange={onOrderChange} />
+        <S.BackIcon onClick={handleClosingSection} />
+        <OrderConfirmation orders={orders} onOrderChange={onOrderChange} />
       </S.CheckoutSectionConfirmation>
       <S.CheckoutSectionPayment>
         <S.CheckoutSectionPaymentHead>Pagamento</S.CheckoutSectionPaymentHead>
@@ -39,8 +48,8 @@ const CheckoutSection = ({orders, onOrderChange, selectedTable, onCloseSection}:
           </S.CheckoutSectionPaymentFormTitle>
           <S.PaymentForm>
             <S.PaymentFormCheckbox>
-            <CheckboxIcon active={true} value="Cartão" icon={<Card />} />
-            <CheckboxIcon active={false} value="Dinheiro" icon={<Cash />} />
+              <CheckboxIcon active={true} value="Cartão" icon={<Card />} />
+              <CheckboxIcon active={false} value="Dinheiro" icon={<Cash />} />
             </S.PaymentFormCheckbox>
             <>
               <S.PaymentFormGroup>
@@ -85,8 +94,21 @@ const CheckoutSection = ({orders, onOrderChange, selectedTable, onCloseSection}:
           <S.PaymentActionsDetails>
             <S.PaymentActionsDetailsOrderType>
               <label htmlFor="card">Tipo de pedido</label>
-              <select>
-                <option>{""}</option>
+              <select
+                onChange={({ target }) =>
+                  onChangeActiveOrderType(target.value as OrderType)
+                }
+                name="order-type"
+                id="order-type"
+                value={Object.values(OrderType)
+                  .filter((option) => option === activeOrderType)
+                  .pop()}
+              >
+                {Object.values(OrderType).map((value, index) => (
+                  <option key={`OrderType-${index}`} value={value}>
+                    {value}
+                  </option>
+                ))}
               </select>
             </S.PaymentActionsDetailsOrderType>
             <S.PaymentActionsDetailsTableNumber>

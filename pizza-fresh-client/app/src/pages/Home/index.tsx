@@ -22,10 +22,12 @@ const Home = () => {
     ...DateTime.DATE_SHORT,
     weekday: "long",
   });
+
   const navigate = useNavigate();
   const [activeOrderType, setActiveOrderType] = useState(
     OrderType.COMER_NO_LOCAL
   );
+
   const [orders, setOrders] = useState<OrderItemType[]>([]);
   const [selectedTable, setSelectedTable] = useState<number | undefined>();
   const [proceedToPayment, setProceedToPayment] = useState<boolean>(false);
@@ -101,6 +103,8 @@ const Home = () => {
           <CheckoutSection
             orders={orders}
             onOrderChange={(data) => setOrders(data)}
+            onChangeActiveOrderType={(data) => setActiveOrderType(data)}
+            activeOrderType={activeOrderType}
             onCloseSection={() => setProceedToPayment(false)} 
             selectedTable={selectedTable}
           />
