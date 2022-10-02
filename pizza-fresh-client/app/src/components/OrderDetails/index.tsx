@@ -102,9 +102,9 @@ const OrderDetails = ({
                 <span>Subtotal</span>
                 <span>R$ {priceState.toFixed(2)}</span>
               </S.OrderDetailsListFooterRow>
-              {(!Boolean(selectedTable) || selectedTable === "default") && (
-                <S.OrderDetailsListFooterWarning>
-                  Escolha uma Mesa
+              {(!Boolean(selectedTable) || selectedTable === "default") &&
+                (<S.OrderDetailsListFooterWarning>
+                  Escolha uma Mesa para continuar...
                 </S.OrderDetailsListFooterWarning>
               )}
               <ButtonLarge

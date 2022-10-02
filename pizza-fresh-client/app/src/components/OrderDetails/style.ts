@@ -92,6 +92,11 @@ export const OrderDetailsListFooterWarning = styled.span`
     ${theme.mixins.bodyStyle()};
     color: ${theme.colors.secondaryColor};
     font-weight: 500;
-    font-size: 16px;
+    font-size: 20px;
+    color: red;
+    text-align: center;
+    padding: .5rem;
+    border-radius: 15px;
+    background-color: yellow;
   `}
 `;
