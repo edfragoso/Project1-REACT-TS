@@ -6,7 +6,7 @@ export interface Product {
 }
 
 export interface ProductUpdate {
-    porduct: Product;
+    product: Product;
     id: string;
 }
 
