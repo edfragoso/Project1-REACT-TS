@@ -1,7 +1,7 @@
 import { OrderItemType } from "types/OrderItemType";
 
 export interface Order {
-    UserId: string;
+    userId: string;
     tableNumber: number;
     products: OrderItemType[];
 }
