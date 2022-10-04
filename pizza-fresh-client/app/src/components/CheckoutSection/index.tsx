@@ -7,6 +7,13 @@ import { HTMLAttributes, useState } from "react";
 import { OrderItemType } from "types/OrderItemType";
 import { OrderType } from "types/orderType";
 import { PaymentMethod } from "types/PaymentMethod";
+import { useMutation } from "@tanstack/react-query";
+import { OrderService } from "services/OrderService";
+import { ErrorResponse } from "types/api/error";
+import { LocalStorageHelper } from "helpers/LocalStorageHelper";
+import { UserResponse } from "types/api/user";
+import { LocalStorageKeys } from "types/LocalStorageKeys";
+import { Order } from "types/api/order";
 
 type CheckoutSectionType = HTMLAttributes<HTMLDivElement>;
 
@@ -29,6 +36,29 @@ const CheckoutSection = ({
 }: CheckoutSectionProps) => {
   const [activeMethod, setActiveMethod] = useState<PaymentMethod>();
   const [closing, setClosing] = useState<boolean>(false);
+  const closeOrder = useMutation(OrderService.create, {
+    onSuccess: (data: {} & ErrorResponse) => {
+      if (data.statusCode) {
+        return;
+      }
+      onOrderChange([]);
+    },
+    onError: () => {
+      console.error("Erro ao fechar o pedido!");
+    },
+  });
+
+  const handlePaymentConfirm = () => {
+    const userId =
+      LocalStorageHelper.get<UserResponse>(LocalStorageKeys.USER)?.id || "";
+    const orderRequest: Order = {
+      userId,
+      tableNumber: Number(selectedTable),
+      products: orders,
+    };
+    closeOrder.mutate(orderRequest);
+  };
+
   const handleClosingSection = () => {
     setClosing(true);
     setTimeout(onCloseSection, 800);
@@ -52,57 +82,57 @@ const CheckoutSection = ({
           <S.PaymentForm>
             <S.PaymentFormCheckbox>
               <CheckboxIcon
-               onClick={() => setActiveMethod(PaymentMethod.CARD)}
-               active={activeMethod === PaymentMethod.CARD}
-               value="Cartão"
-               icon={<Card />}
+                onClick={() => setActiveMethod(PaymentMethod.CARD)}
+                active={activeMethod === PaymentMethod.CARD}
+                value="Cartão"
+                icon={<Card />}
               />
               <CheckboxIcon
-               onClick={() => setActiveMethod(PaymentMethod.CASH)}
-               active={activeMethod === PaymentMethod.CASH}
-               value="Dinheiro"
-               icon={<Cash />}
+                onClick={() => setActiveMethod(PaymentMethod.CASH)}
+                active={activeMethod === PaymentMethod.CASH}
+                value="Dinheiro"
+                icon={<Cash />}
               />
             </S.PaymentFormCheckbox>
             {activeMethod === PaymentMethod.CARD && (
-            <>
-              <S.PaymentFormGroup>
-                <label htmlFor="titular">Titular do cartão</label>
-                <input
-                  type="text"
-                  name="titular"
-                  id="titular"
-                  placeholder="Nome Titular Cartão"
-                />
-              </S.PaymentFormGroup>
+              <>
+                <S.PaymentFormGroup>
+                  <label htmlFor="titular">Titular do cartão</label>
+                  <input
+                    type="text"
+                    name="titular"
+                    id="titular"
+                    placeholder="Nome Titular Cartão"
+                  />
+                </S.PaymentFormGroup>
 
-              <S.PaymentFormGroup>
-                <label htmlFor="card">Número do cartão</label>
-                <input
-                  type="text"
-                  name="card"
-                  id="card"
-                  placeholder="5369 7644 5393 3165"
-                />
-              </S.PaymentFormGroup>
-
-              <S.PaymentFormHalf>
-                <S.PaymentFormHalfItem>
-                  <label htmlFor="validity">Validade</label>
+                <S.PaymentFormGroup>
+                  <label htmlFor="card">Número do cartão</label>
                   <input
                     type="text"
                     name="card"
-                    id="validity"
-                    placeholder="09/2023"
+                    id="card"
+                    placeholder="5369 7644 5393 3165"
                   />
-                </S.PaymentFormHalfItem>
-                <S.PaymentFormHalfItem>
-                  <label htmlFor="cvv">CVV</label>
-                  <input type="text" name="cvv" id="cvv" placeholder="218" />
-                </S.PaymentFormHalfItem>
-              </S.PaymentFormHalf>
-            </>
-          )}
+                </S.PaymentFormGroup>
+
+                <S.PaymentFormHalf>
+                  <S.PaymentFormHalfItem>
+                    <label htmlFor="validity">Validade</label>
+                    <input
+                      type="text"
+                      name="card"
+                      id="validity"
+                      placeholder="09/2023"
+                    />
+                  </S.PaymentFormHalfItem>
+                  <S.PaymentFormHalfItem>
+                    <label htmlFor="cvv">CVV</label>
+                    <input type="text" name="cvv" id="cvv" placeholder="218" />
+                  </S.PaymentFormHalfItem>
+                </S.PaymentFormHalf>
+              </>
+            )}
           </S.PaymentForm>
         </S.CheckoutSectionPaymentForm>
         <S.PaymentActions>
@@ -140,10 +170,10 @@ const CheckoutSection = ({
           </S.PaymentActionsDetails>
 
           <S.PaymentActionsButtonGroup>
-            <S.PaymentActionsButtonGroupCancel>
+            <S.PaymentActionsButtonGroupCancel onClick={handleClosingSection}>
               Cancelar
             </S.PaymentActionsButtonGroupCancel>
-            <S.PaymentActionsButtonGroupConfirm>
+            <S.PaymentActionsButtonGroupConfirm onClick={handlePaymentConfirm}>
               Confirmar Pagamento
             </S.PaymentActionsButtonGroupConfirm>
           </S.PaymentActionsButtonGroup>
