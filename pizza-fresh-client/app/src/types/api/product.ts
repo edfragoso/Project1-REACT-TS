@@ -13,6 +13,7 @@ export interface ProductUpdate {
 export interface ProductResponse {
     id: string;
     name: string;
+    image: string;
     description: string;
     price: number;
     updateAt?: string;
