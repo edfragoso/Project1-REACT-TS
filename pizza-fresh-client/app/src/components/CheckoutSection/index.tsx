@@ -72,7 +72,7 @@ const CheckoutSection = ({
                   type="text"
                   name="titular"
                   id="titular"
-                  placeholder="Will Smith"
+                  placeholder="Nome Titular Cartão"
                 />
               </S.PaymentFormGroup>
 
