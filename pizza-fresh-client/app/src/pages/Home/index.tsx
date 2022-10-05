@@ -19,6 +19,7 @@ import { OrderItemType } from "types/OrderItemType";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKey } from "types/QueryKey";
 import { ProductService } from "services/ProductService";
+import { Auth } from "helpers/Auth";
 
 
 const Home = () => {
@@ -65,7 +66,7 @@ const Home = () => {
         active={RoutePath.HOME}
         navItems={navigationItems}
         onNavigate={handleNavigation}
-        onLogout={() => navigate(RoutePath.LOGIN)}
+        onLogout={Auth.logout}
       />
       <S.HomeContent>
         <header>
