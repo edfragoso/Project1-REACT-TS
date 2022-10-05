@@ -20,6 +20,8 @@ import { useQuery } from "@tanstack/react-query";
 import { QueryKey } from "types/QueryKey";
 import { ProductService } from "services/ProductService";
 import { Auth } from "helpers/Auth";
+import { matchByText } from "helpers/Utils";
+
 
 
 const Home = () => {
@@ -40,6 +42,7 @@ const Home = () => {
   const [orders, setOrders] = useState<OrderItemType[]>([]);
   const [selectedTable, setSelectedTable] = useState<number | undefined>();
   const [proceedToPayment, setProceedToPayment] = useState<boolean>(false);
+  const [filteredProducts, setFilteredProducts] = useState<ProductResponse[]>([]);
   const handleNavigation = (path: RoutePath) => navigate(path);
 
   const handleSelection = (product: ProductResponse) => {
@@ -51,13 +54,20 @@ const Home = () => {
       : [...orders, item];
     setOrders(list);
   };
+
   const handleRemoveOrderItem = (id: string) => {
     const filtered = orders.filter((i) => i.product.id != id);
     setOrders(filtered);
   };
 
+  const handleFilter = (title: string) => {
+    const list = products.filter(({name}) => matchByText(name, title));
+    setFilteredProducts(list);
+  }
+
   useEffect(() => {
     setProducts(productsData || []);
+    setFilteredProducts(productsData || []);
   }, [productsData]);
 
   return (
@@ -79,7 +89,10 @@ const Home = () => {
             </div>
             <S.HomeHeaderDetailsSearch>
               <Search />
-              <input type="text" placeholder="Procure pelo sabor da Pizza" />
+              <input
+               type="text"
+               placeholder="Procure pelo sabor da Pizza"
+               onChange={({target}) => handleFilter(target.value)}/>
             </S.HomeHeaderDetailsSearch>
           </S.HomeHeaderDetails>
         </header>
@@ -88,9 +101,9 @@ const Home = () => {
             <b>Pizzas</b>
           </S.HomeProductTitle>
           <S.HomeProductList>
-            <ProductItemList onSelectTable={setSelectedTable}>
+            <ProductItemList onSelectTable = {setSelectedTable}>
               {Boolean(products.length) &&
-                products.map((product, index) => (
+                filteredProducts.map((product, index) => (
                   <ProductItem
                     product={product}
                     key={`ProductItem-${index}`}
