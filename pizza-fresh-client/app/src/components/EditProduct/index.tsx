@@ -1,8 +1,11 @@
 import { ReactComponent as Pencil } from "assets/icons/edit.svg";
+import { ProductResponse } from "types/api/product";
 import * as S from "./style";
 
-
-const EditProduct = () => {
+interface EditProductProps {
+    product: ProductResponse;
+}
+const EditProduct = ({product}: EditProductProps) => {
     return (
         <S.EditProduct>
             <>
