@@ -1,13 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ReactComponent as Add } from "assets/icons/add.svg";
 import EditProduct from "components/EditProduct";
-import { product } from "helpers/endpoints/product";
-import { HTMLAttributes, useState, useEffect } from "react";
+import { HTMLAttributes, useEffect, useState } from "react";
 import { ProductService } from "services/ProductService";
 import { ErrorResponse } from "types/api/error";
 import { Product, ProductResponse } from "types/api/product";
 import { QueryKey } from "types/QueryKey";
-
 import * as S from "./style";
 
 type ManageProductsType = HTMLAttributes<HTMLDivElement>;
@@ -16,7 +14,6 @@ type ManageProductsProps = {} & ManageProductsType;
 
 const ManageProducts = ({ ...props }: ManageProductsProps) => {
   const [products, setProducts] = useState<ProductResponse[]>([]);
-
   const { data: productsData } = useQuery(
     [QueryKey.PRODUCTS],
     ProductService.getLista
@@ -53,9 +50,9 @@ const ManageProducts = ({ ...props }: ManageProductsProps) => {
   const productIsValid = () =>
     Boolean(
       productToAdd.name.length &&
-      productToAdd.price.toString().length &&
-      productToAdd.description.length &&
-      productToAdd.image.length
+        productToAdd.price.toString().length &&
+        productToAdd.description.length &&
+        productToAdd.image.length
     );
 
   const productFormatter = (toFormat: typeof form): Product => ({
@@ -76,6 +73,7 @@ const ManageProducts = ({ ...props }: ManageProductsProps) => {
   const handleSave = () => {
     const canAdd = productIsValid();
     const productFormatted = productFormatter(productToAdd);
+
     if (canAdd) add.mutate(productFormatted);
     setTimeout(() => handleCancel(), 300);
     setProductToAdd(form);
@@ -101,42 +99,40 @@ const ManageProducts = ({ ...props }: ManageProductsProps) => {
         ) : (
           <S.AddCard>
             <S.EditForm
-             type="text"
-             placeholder="Título"
-             success={Boolean(productToAdd.name.length)}
-             value={productToAdd.name}
-             onChange={({ target }) => handleAddChange("name", target.value)}
+              type="text"
+              placeholder="Título"
+              success={Boolean(productToAdd.name.length)}
+              value={productToAdd.name}
+              onChange={({ target }) => handleAddChange("name", target.value)}
             />
             <S.EditForm
-             type="number"
-             placeholder="Preço"
-             success={Boolean(productToAdd.price)}
-             value={productToAdd.price || ""}
-             onChange={({ target }) => handleAddChange("price", target.value)}
+              type="number"
+              placeholder="Preço"
+              success={Boolean(productToAdd.price)}
+              value={productToAdd.price || ""}
+              onChange={({ target }) => handleAddChange("price", +target.value)}
             />
             <S.EditForm
-             type="text"
-             placeholder="Descrição"
-             success={Boolean(productToAdd.description.length)}
-             value={productToAdd.description}
-             onChange={({ target }) => handleAddChange("description", target.value)}
+              type="text"
+              placeholder="Descrição"
+              success={Boolean(productToAdd.description.length)}
+              value={productToAdd.description}
+              onChange={({ target }) =>
+                handleAddChange("description", target.value)
+              }
             />
             <S.EditForm
-             type="url"
-             placeholder="Imagem"
-             success={Boolean(productToAdd.image.length)}
-             value={productToAdd.image}
-             onChange={({ target }) => handleAddChange("image", target.value)}
+              type="url"
+              placeholder="Imagem"
+              success={Boolean(productToAdd.image.length)}
+              value={productToAdd.image}
+              onChange={({ target }) => handleAddChange("image", target.value)}
             />
           </S.AddCard>
         )}
-
-        {/* {products.map((product, index) => (
-          <EditProduct
-            product={product}
-            key={index}
-          />
-        ))}   */}
+        {products.map((product, index) => (
+          <EditProduct product={product} key={index} />
+        ))}
       </S.ManageProductsContent>
       <S.ManageProductsActions>
         <S.ManageProductsActionsCancel onClick={handleCancel}>
