@@ -21,8 +21,7 @@ import { QueryKey } from "types/QueryKey";
 import { ProductService } from "services/ProductService";
 import { Auth } from "helpers/Auth";
 import { matchByText } from "helpers/Utils";
-
-
+import { TableService } from "services/TableService";
 
 const Home = () => {
   const dateDescription = DateTime.now().toLocaleString({
@@ -31,18 +30,26 @@ const Home = () => {
   });
 
   const navigate = useNavigate();
-  
+
   const { data: productsData } = useQuery(
     [QueryKey.PRODUCTS],
     ProductService.getLista
   );
+  const { data: tablesData } = useQuery(
+    [QueryKey.TABLES],
+    TableService.getLista);
 
+  const tables = tablesData || [];
   const [products, setProducts] = useState<ProductResponse[]>([]);
-  const [activeOrderType, setActiveOrderType] = useState(OrderType.COMER_NO_LOCAL);
+  const [activeOrderType, setActiveOrderType] = useState(
+    OrderType.COMER_NO_LOCAL
+  );
   const [orders, setOrders] = useState<OrderItemType[]>([]);
   const [selectedTable, setSelectedTable] = useState<number | undefined>();
   const [proceedToPayment, setProceedToPayment] = useState<boolean>(false);
-  const [filteredProducts, setFilteredProducts] = useState<ProductResponse[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductResponse[]>(
+    []
+  );
   const handleNavigation = (path: RoutePath) => navigate(path);
 
   const handleSelection = (product: ProductResponse) => {
@@ -61,9 +68,9 @@ const Home = () => {
   };
 
   const handleFilter = (title: string) => {
-    const list = products.filter(({name}) => matchByText(name, title));
+    const list = products.filter(({ name }) => matchByText(name, title));
     setFilteredProducts(list);
-  }
+  };
 
   useEffect(() => {
     setProducts(productsData || []);
@@ -90,9 +97,10 @@ const Home = () => {
             <S.HomeHeaderDetailsSearch>
               <Search />
               <input
-               type="text"
-               placeholder="Procure pelo sabor da Pizza"
-               onChange={({target}) => handleFilter(target.value)}/>
+                type="text"
+                placeholder="Procure pelo sabor da Pizza"
+                onChange={({ target }) => handleFilter(target.value)}
+              />
             </S.HomeHeaderDetailsSearch>
           </S.HomeHeaderDetails>
         </header>
@@ -101,7 +109,7 @@ const Home = () => {
             <b>Pizzas</b>
           </S.HomeProductTitle>
           <S.HomeProductList>
-            <ProductItemList onSelectTable = {setSelectedTable}>
+            <ProductItemList tables={tables} onSelectTable={setSelectedTable}>
               {Boolean(products.length) &&
                 filteredProducts.map((product, index) => (
                   <ProductItem
@@ -117,7 +125,7 @@ const Home = () => {
       <aside>
         <OrderDetails
           orders={orders}
-          onProceedToPayment = {() => setProceedToPayment(true)}
+          onProceedToPayment={() => setProceedToPayment(true)}
           onOrderChange={(data) => setOrders(data)}
           onChangeActiveOrderType={(data) => setActiveOrderType(data)}
           activeOrderType={activeOrderType}
@@ -125,14 +133,14 @@ const Home = () => {
           selectedTable={selectedTable}
         />
       </aside>
-      { proceedToPayment && (
+      {proceedToPayment && (
         <Overlay>
           <CheckoutSection
             orders={orders}
             onOrderChange={(data) => setOrders(data)}
             onChangeActiveOrderType={(data) => setActiveOrderType(data)}
             activeOrderType={activeOrderType}
-            onCloseSection={() => setProceedToPayment(false)} 
+            onCloseSection={() => setProceedToPayment(false)}
             selectedTable={selectedTable}
           />
         </Overlay>
