@@ -5,7 +5,7 @@ export const OrderDetails = styled.section`
     width: 350px;
     justify-self: end;
     background: ${theme.colors.baseBg2};
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
     overflow: auto;
     min-height: 100vh;

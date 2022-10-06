@@ -42,7 +42,7 @@ export const ManageUsersContent = styled.div`
   ${() => css`
     margin-top: 15px;
     justify-content: center;
-    height: 400px;
+    height: 300px;
     padding-bottom: 20px;
     box-sizing: border-box;
     display: flex;
