@@ -8,7 +8,7 @@ export const UserService = {
       method: "GET",
     }).then((response) => response.json()),
 
-  createUser: (user: User) =>
+  create: (user: User) =>
     Api(endpoint.createUser(), {
       method: "POST",
       body: JSON.stringify(user),
