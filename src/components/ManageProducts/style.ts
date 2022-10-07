@@ -42,7 +42,7 @@ export const ManageProductsContent = styled.div`
   ${() => css`
     margin-top: 15px;
     justify-content: center;
-    height: 280px;
+    height: 250px;
     padding-bottom: 20px;
     box-sizing: border-box;
     display: flex;
